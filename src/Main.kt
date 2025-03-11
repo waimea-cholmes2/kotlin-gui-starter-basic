@@ -9,6 +9,7 @@
  */
 
 import com.formdev.flatlaf.FlatDarkLaf
+import com.formdev.flatlaf.FlatLaf.updateUI
 import java.awt.*
 import java.awt.event.*
 import javax.swing.*
@@ -41,6 +42,7 @@ class MainWindow : JFrame(), ActionListener {
     private lateinit var redLabel: JTextField
     private lateinit var greenLabel: JTextField
     private lateinit var blueLabel: JTextField
+    private lateinit var colourLabel: JLabel
 
     /**
      * Configure the UI and display it
@@ -79,6 +81,8 @@ class MainWindow : JFrame(), ActionListener {
         hexCodeLabel.bounds = Rectangle(120, 30, 260, 40)
         hexCodeLabel.font = defaultFont
         add(hexCodeLabel)
+
+
 
         redUpButton = JButton("+")
         redUpButton.bounds = Rectangle(20,230,30,30)
@@ -134,11 +138,30 @@ class MainWindow : JFrame(), ActionListener {
 
         add(blueDownButton)
 
-        redLabel = JTextField("")
+        redLabel = JTextField("0")
         redLabel.horizontalAlignment = SwingConstants.CENTER
-        redLabel.bounds = Rectangle(80, 230, 70, 90)
+        redLabel.bounds = Rectangle(70, 230, 90, 90)
         redLabel.font = defaultFont
         add(redLabel)
+
+        greenLabel = JTextField("0")
+        greenLabel.horizontalAlignment = SwingConstants.CENTER
+        greenLabel.bounds = Rectangle(230, 230, 90, 90)
+        greenLabel.font = defaultFont
+        add(greenLabel)
+
+        blueLabel = JTextField("0")
+        blueLabel.horizontalAlignment = SwingConstants.CENTER
+        blueLabel.bounds = Rectangle(390, 230, 90, 90)
+        blueLabel.font = defaultFont
+        add(blueLabel)
+
+
+        colourLabel = JLabel()
+        colourLabel.bounds = Rectangle(100, 100, 300, 100)
+        colourLabel.background = Color(0,0,0)
+        colourLabel.isOpaque = true
+        add(colourLabel)
     }
 
 
@@ -146,12 +169,31 @@ class MainWindow : JFrame(), ActionListener {
      * Handle any UI events (e.g. button clicks)
      */
     override fun actionPerformed(e: ActionEvent?) {
+        var redNum = redLabel.text.toIntOrNull()?:0
+        var greenNum = greenLabel.text.toIntOrNull()?:0
+        var blueNum = blueLabel.text.toIntOrNull()?:0
+
         when (e?.source) {
-            redUpButton -> {
-                hexCodeLabel.text = "You clicked the button!"
-            }
+            redUpButton -> redNum++
+            redDownButton -> redNum--
+            greenUpButton -> greenNum++
+            greenDownButton -> greenNum--
+            blueUpButton -> blueNum++
+            blueDownButton -> blueNum--
+        }
+
+        redLabel.text = redNum.toString()
+        greenLabel.text = greenNum.toString()
+        blueLabel.text = blueNum.toString()
+
+
+        val newColor = Color(redNum, greenNum, blueNum)
+        colourLabel.background = newColor
+
+
+        updateUI()
         }
     }
 
-}
+
 
